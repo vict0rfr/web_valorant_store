@@ -7,7 +7,7 @@ html{
 
 body {
     background-color: #31304D;
-    margin: 8px 0 0 0;
+    margin: 0;
 }
 nav {
     display: flex;
@@ -16,7 +16,7 @@ nav {
     align-items: center;
     padding: 15px 0;
     width: calc(100% - 5vw);
-    margin: 0 auto;
+    margin: 8px auto;
     transition: all 0.5s ease;
     background-color: #161A30;
     border-radius: 45px;
@@ -53,7 +53,7 @@ nav > ul > li:hover, nav > ul > a:hover {
 nav > ul > li > a:active, nav > ul > li > button:active{
     opacity: 0.6;
 }
-body > nav > ul:nth-child(3) > li, body > nav > img {
+nav > ul:nth-child(3) > li, nav > img {
     margin: 0 20px;
 }
 
@@ -120,6 +120,7 @@ section > article > figure > img, section > div > article > figure > img {
     margin: 0;
     padding: 0 15px;
 }
+
 footer {
     display: flex;
     flex-direction: column;
@@ -127,4 +128,84 @@ footer {
     padding: 15px 0;
     margin: 0 auto;
     background-color: #F0ECE5;
+}
+
+.login_box {
+    display: none;
+    padding: 15px 0;
+    margin: 0 auto;
+    background-color: #e7e7e7;
+    width: 350px;
+    border: 0.5px solid #787878;
+    border-radius: 5px;
+    z-index: 97;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    overflow: auto;
+}
+
+.login_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 15px 0;
+    margin: 0 auto;
+}
+
+.login_header > p {
+    margin: 0 15px;
+    text-align: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
+}
+
+div.login_form > form > p {
+    margin: 5px;
+}
+
+div.login_form > form > input[type=text], div.login_form > form > input[type=password] {
+    background-color: white;
+	border: 1px solid rgb(181, 181, 181);
+	font: inherit;
+    font-size: small;
+	outline: inherit;
+    border-radius: 5px;
+    height: 25px;
+    padding: 1px 5px;
+}
+div.login_form > form > input[type=submit]:nth-child(5) {
+    margin: 20px 0 10px 0;
+    height: 35px;
+    background-color: rgba(16, 15, 15, 0.958);
+    color: rgb(215, 215, 215);
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    border-radius: 5px;
+}
+
+.close-button button {
+    position: relative;
+    color: black;
+    left: 150px;
+    bottom: 3px;
+}
+
+.loader {
+    display: none;
+    z-index: 98;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    overflow: auto;
+    width: 50%;
+    height: 50%;
 }

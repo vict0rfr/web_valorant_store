@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Valorant Store | Home</title>
+        <link href="{{ url_for('static',filename='static/styles/styles.css') }}" rel="stylesheet" type="text/css" />
+        <link href="..\static\styles\styles.css" rel="stylesheet" type="text/css" />
+        <link href="{{logo}}" rel="icon" type="image/webp" />
+        <script src="..\static\styles\script.js" defer></script>
+        <script src="{{ url_for('static',filename='static/styles/script.js') }}" defer></script>
+    </head>
+
+    <body>
+        <div class="login_box">
+            <div class="login_header">
+                <button>
+                    <span class="material-symbols-outlined close-button">close</span>
+                </button>
+                <h1>Login</h1>
+                <p>Please enter your username and password to login</p>
+            </div>
+            <div class="login_form">
+                <form action="{{ url_for('login') }}" method="POST">
+                    <p>Username</p>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <p>Password</p>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="submit" name="submit" value="Login">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
