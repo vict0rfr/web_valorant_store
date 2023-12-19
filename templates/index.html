@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Valorant Store | Home</title>
+        <link href="{{ url_for('static',filename='static/styles/styles.css') }}" rel="stylesheet" type="text/css" />
+        <link href="..\static\styles\styles.css" rel="stylesheet" type="text/css" />
+        <link href="{{logo}}" rel="icon" type="image/webp" />
+        <script src="..\static\styles\script.js" defer></script>
+        <script src="{{ url_for('static',filename='static/styles/script.js') }}" defer></script>
+    </head>
+
+    <body>
+        <nav>
+            <img
+            src="{{logo}}"
+            alt="Valorant brand logo"
+            tabindex="0"
+            role="button"
+            aria-label="Valorant brand logo"
+          />
+            <ul>
+                <li><a href="">Shop</a></li>
+                <li><a href="">Night Market</a></li>
+                <li><a href="">Accessories</a></li>
+            </ul>
+            <ul>
+                <li><button class="log-in">Log In</button></li>
+            </ul>
+        </nav>
+        <header>
+            <h1>Valorant Store</h1>
+            <p>Made by: la degaine a tt</p>
+        </header>
+        <main>
+            <section>
+                <div class="wallet">
+                    <h2>Valorant Credits: </h2>
+                    <p>{{val_credits}}</p>
+                    <h2>Radianite Points: </h2>
+                    <p>{{rad_points}}</p>
+                    <h2>Kingdom Credits: </h2>
+                    <p>{{kingdom_credits}}</p>
+                </div>
+                <article id="bundleOffer">
+                    <figure>
+                        <img src="{{bundle0}}" alt="Bundle Valorant Shop" />
+                        <figcaption>
+                            <h3>[bundle name]</h3>
+                            <p>{{content}}</p>
+                        </figcaption>
+                    </figure>
+                </article>
+                <div class="grid">
+                    <article>
+                        <figure>
+                            <img src="{{dailyOffer0}}" alt="Item 1 Valorant Shop" />
+                            <figcaption>
+                                <h3>[item1 name]</h3>
+                                <p>[item1 description/price]</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="{{dailyOffer1}}" alt="Item 2 Valorant Shop" />
+                            <figcaption>
+                                <h3>[item2 name]</h3>
+                                <p>[item2 description/price]</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="{{dailyOffer2}}" alt="Item 3 Valorant Shop" />
+                            <figcaption>
+                                <h3>[item3 name]</h3>
+                                <p>[item3 description/price]</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="{{dailyOffer3}}" alt="Item 4 Valorant Shop" />
+                            <figcaption>
+                                <h3>[item4 name]</h3>
+                                <p>[item4 description/price]</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>Valorant &copy; 2023</p>
+            <p>Random garbage</p>
+        </footer>
+    </body>
+</html>
