@@ -9,7 +9,7 @@ def login():
         user = request.form['username']
         pswd = request.form['password']
         valorant_store = ValorantStore(username=user, password=pswd, region="na")
-        return render_template("index.html",
+        return render_template("itemshop.html",
                         val_credits=valorant_store.wallet(True)["valorant_points"],
                         rad_points=valorant_store.wallet(True)["radianite_points"],
                         kingdom_credits=valorant_store.wallet(True)["kingdom_credits"],
