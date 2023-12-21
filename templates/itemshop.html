@@ -9,9 +9,7 @@
       rel="stylesheet"
       type="text/css"
     />
-    <link href="..\static\styles\styles.css" rel="stylesheet" type="text/css" />
     <link href="{{logo}}" rel="icon" type="image/webp" />
-    <script src="..\static\styles\script.js" defer></script>
     <script
       src="{{ url_for('static',filename='static/styles/script.js') }}"
       defer
@@ -100,12 +98,11 @@
           <h2>Kingdom Credits:</h2>
           <p>{{kingdom_credits}}</p>
         </div>
-        <article id="bundleOffer">
+        <article>
           <figure>
-            <img src="{{bundle0}}" alt="Bundle Valorant Shop" />
+            <img src="{{bundleImg}}" alt="Bundle Valorant Shop" />
             <figcaption>
-              <h3>[bundle name]</h3>
-              <p>{{content}}</p>
+              <h3>{{bundle0}}</h3>
             </figcaption>
           </figure>
         </article>
@@ -114,8 +111,7 @@
             <figure>
               <img src="{{dailyOffer0}}" alt="Item 1 Valorant Shop" />
               <figcaption>
-                <h3>[item1 name]</h3>
-                <p>[item1 description/price]</p>
+                <h3>{{item0}}</h3>
               </figcaption>
             </figure>
           </article>
@@ -123,8 +119,7 @@
             <figure>
               <img src="{{dailyOffer1}}" alt="Item 2 Valorant Shop" />
               <figcaption>
-                <h3>[item2 name]</h3>
-                <p>[item2 description/price]</p>
+                <h3>{{item1}}</h3>
               </figcaption>
             </figure>
           </article>
@@ -132,8 +127,7 @@
             <figure>
               <img src="{{dailyOffer2}}" alt="Item 3 Valorant Shop" />
               <figcaption>
-                <h3>[item3 name]</h3>
-                <p>[item3 description/price]</p>
+                <h3>{{item2}}</h3>
               </figcaption>
             </figure>
           </article>
@@ -141,8 +135,7 @@
             <figure>
               <img src="{{dailyOffer3}}" alt="Item 4 Valorant Shop" />
               <figcaption>
-                <h3>[item4 name]</h3>
-                <p>[item4 description/price]</p>
+                <h3>{{item3}}</h3>
               </figcaption>
             </figure>
           </article>
