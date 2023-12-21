@@ -28,3 +28,5 @@ close_button.addEventListener("click", () => {
     });
     bundleOfferImage.style.opacity = "1";
 });
+
+// make the loading circle displayt block but it will dissapear when page refreshes
