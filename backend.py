@@ -1,5 +1,8 @@
 from flask import Flask, redirect, url_for, request, render_template, session
 from valorantstore import ValorantStore
+import requests
+from humanfriendly import format_timespan
+import json
 
 app = Flask(__name__)
 
@@ -9,7 +12,6 @@ def home():
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
-        valorant_store = ValorantStore(username=user, password=pswd, region="na")
         return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg")
     else:
         return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg")
@@ -20,20 +22,28 @@ def itemshop():
         user = request.form['username']
         pswd = request.form['password']
         valorant_store = ValorantStore(username=user, password=pswd, region="na")
+        store = valorant_store.store(False)
+        wallet = valorant_store.wallet(False)
         return render_template("itemshop.html",
-                        val_credits=valorant_store.wallet(True)["valorant_points"],
-                        rad_points=valorant_store.wallet(True)["radianite_points"],
-                        kingdom_credits=valorant_store.wallet(True)["kingdom_credits"],
-                        bundleImg=valorant_store.store(True)["bundles"]["data"][0]["image"],
-                        dailyOffer0=valorant_store.store(True)["daily_offers"]["data"][0]["image"],
-                        dailyOffer1=valorant_store.store(True)["daily_offers"]["data"][1]["image"],
-                        dailyOffer2=valorant_store.store(True)["daily_offers"]["data"][2]["image"],
-                        dailyOffer3=valorant_store.store(True)["daily_offers"]["data"][3]["image"],      
-                        bundle0=valorant_store.bundle_info(valorant_store.store(True)["bundles"]["data"][0]["id"])["displayName"],
-                        item0=valorant_store.skin_info(valorant_store.store(True)["daily_offers"]["data"][0]["id"])["displayName"],
-                        item1=valorant_store.skin_info(valorant_store.store(True)["daily_offers"]["data"][1]["id"])["displayName"],
-                        item2=valorant_store.skin_info(valorant_store.store(True)["daily_offers"]["data"][2]["id"])["displayName"],
-                        item3=valorant_store.skin_info(valorant_store.store(True)["daily_offers"]["data"][3]["id"])["displayName"],
+                        val_credits=wallet["Balances"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        rad_points=wallet["Balances"]["e59aa87c-4cbf-517a-5983-6e81511be9b7"],
+                        kingdom_credits=wallet["Balances"]["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"],
+                        bundleImg=f"https://media.valorant-api.com/bundles/{store['FeaturedBundle']['Bundles'][0]['DataAssetID']}/displayicon.png",
+                        bundle0=(requests.get(f"https://valorant-api.com/v1/bundles/{store['FeaturedBundle']['Bundles'][0]['DataAssetID']}").json())["data"]["displayName"],
+                        bundlePrice0=store["FeaturedBundle"]["Bundles"][0]["TotalDiscountedCost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        dailyOffer0=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][0]['OfferID']}/displayicon.png",
+                        dailyOffer1=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][1]['OfferID']}/displayicon.png",
+                        dailyOffer2=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][2]['OfferID']}/displayicon.png",
+                        dailyOffer3=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][3]['OfferID']}/displayicon.png",      
+                        item0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][0]['OfferID']}").json()["data"]["displayName"],
+                        item1=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][1]['OfferID']}").json()["data"]["displayName"],
+                        item2=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][2]['OfferID']}").json()["data"]["displayName"],
+                        item3=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][3]['OfferID']}").json()["data"]["displayName"],
+                        price0=store["SkinsPanelLayout"]["SingleItemStoreOffers"][0]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        price1=store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        price2=store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        price3=store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        timeleft_shop="Time left: " + format_timespan(store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"]), 
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
     else:
@@ -45,31 +55,33 @@ def nightmarket():
         user = request.form['username']
         pswd = request.form['password']
         valorant_store = ValorantStore(username=user, password=pswd, region="na")
+        store = valorant_store.store(False)
         return render_template("nightmarket.html",
-                        nightmarketname0=valorant_store.skin_info(valorant_store.store(True)["night_market"]["data"][0]["id"])["displayName"],
-                        nightmarketname1=valorant_store.skin_info(valorant_store.store(True)["night_market"]["data"][1]["id"])["displayName"],
-                        nightmarketname2=valorant_store.skin_info(valorant_store.store(True)["night_market"]["data"][2]["id"])["displayName"],
-                        nightmarketname3=valorant_store.skin_info(valorant_store.store(True)["night_market"]["data"][3]["id"])["displayName"],
-                        nightmarketname4=valorant_store.skin_info(valorant_store.store(True)["night_market"]["data"][4]["id"])["displayName"],
-                        nightmarketname5=valorant_store.skin_info(valorant_store.store(True)["night_market"]["data"][5]["id"])["displayName"],
-                        nightmarket0=valorant_store.store(True)["night_market"]["data"][0]["image"],
-                        nightmarket1=valorant_store.store(True)["night_market"]["data"][1]["image"],
-                        nightmarket2=valorant_store.store(True)["night_market"]["data"][2]["image"],
-                        nightmarket3=valorant_store.store(True)["night_market"]["data"][3]["image"],
-                        nightmarket4=valorant_store.store(True)["night_market"]["data"][4]["image"],
-                        nightmarket5=valorant_store.store(True)["night_market"]["data"][5]["image"],
-                        orgPrice0=valorant_store.store(True)["night_market"]["data"][0]["original_cost"],
-                        orgPrice1=valorant_store.store(True)["night_market"]["data"][1]["original_cost"],
-                        orgPrice2=valorant_store.store(True)["night_market"]["data"][2]["original_cost"],
-                        orgPrice3=valorant_store.store(True)["night_market"]["data"][3]["original_cost"],
-                        orgPrice4=valorant_store.store(True)["night_market"]["data"][4]["original_cost"],
-                        orgPrice5=valorant_store.store(True)["night_market"]["data"][5]["original_cost"],
-                        discountPrice0=valorant_store.store(True)["night_market"]["data"][0]["discount_cost"],
-                        discountPrice1=valorant_store.store(True)["night_market"]["data"][1]["discount_cost"],
-                        discountPrice2=valorant_store.store(True)["night_market"]["data"][2]["discount_cost"],
-                        discountPrice3=valorant_store.store(True)["night_market"]["data"][3]["discount_cost"],
-                        discountPrice4=valorant_store.store(True)["night_market"]["data"][4]["discount_cost"],
-                        discountPrice5=valorant_store.store(True)["night_market"]["data"][5]["discount_cost"],
+                        nightmarketname0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}").json()["data"]["displayName"],
+                        nightmarketname1=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][1]['Offer']['OfferID']}").json()["data"]["displayName"],
+                        nightmarketname2=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][2]['Offer']['OfferID']}").json()["data"]["displayName"],
+                        nightmarketname3=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][3]['Offer']['OfferID']}").json()["data"]["displayName"],
+                        nightmarketname4=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][4]['Offer']['OfferID']}").json()["data"]["displayName"],
+                        nightmarketname5=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][5]['Offer']['OfferID']}").json()["data"]["displayName"],
+                        nightmarket0=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}/displayicon.png",
+                        nightmarket1=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][1]['Offer']['OfferID']}/displayicon.png",
+                        nightmarket2=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][2]['Offer']['OfferID']}/displayicon.png",
+                        nightmarket3=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][3]['Offer']['OfferID']}/displayicon.png",
+                        nightmarket4=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][4]['Offer']['OfferID']}/displayicon.png",
+                        nightmarket5=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][5]['Offer']['OfferID']}/displayicon.png",
+                        orgPrice0=store['BonusStore']['BonusStoreOffers'][0]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        orgPrice1=store['BonusStore']['BonusStoreOffers'][1]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        orgPrice2=store['BonusStore']['BonusStoreOffers'][2]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        orgPrice3=store['BonusStore']['BonusStoreOffers'][3]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        orgPrice4=store['BonusStore']['BonusStoreOffers'][4]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        orgPrice5=store['BonusStore']['BonusStoreOffers'][5]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        discountPrice0=store['BonusStore']['BonusStoreOffers'][0]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        discountPrice1=store['BonusStore']['BonusStoreOffers'][1]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        discountPrice2=store['BonusStore']['BonusStoreOffers'][2]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        discountPrice3=store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        discountPrice4=store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        discountPrice5=store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        timeleft_nightmarket="Time left: " + format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
     else:
@@ -80,7 +92,7 @@ def accessories():
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
-        valorant_store = ValorantStore(username=user, password=pswd, region="na")
+        # valorant_store = ValorantStore(username=user, password=pswd, region="na")
         return render_template("accessories.html",
 
                     )

@@ -4,18 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Valorant Store | Item Shop</title>
-    <link
-      href="{{ url_for('static',filename='static/styles/styles.css') }}"
-      rel="stylesheet"
-      type="text/css"
-    />
     <link href="..\static\styles\styles.css" rel="stylesheet" type="text/css" />
     <link href="{{logo}}" rel="icon" type="image/webp" />
     <script src="..\static\styles\script.js" defer></script>
-    <script
-      src="{{ url_for('static',filename='static/styles/script.js') }}"
-      defer
-    ></script>
   </head>
   <body>
     <nav>
@@ -100,11 +91,13 @@
           <h2>Kingdom Credits:</h2>
           <p>{{kingdom_credits}}</p>
         </div>
+        <p class="time-left">{{timeleft_shop}}</p>
         <article>
           <figure>
             <img src="{{bundleImg}}" alt="Bundle Valorant Shop" />
             <figcaption>
               <h3>{{bundle0}}</h3>
+              <p class="price-tags">{{bundlePrice0}} vbucks</p>
             </figcaption>
           </figure>
         </article>
@@ -114,6 +107,7 @@
               <img src="{{dailyOffer0}}" alt="Item 1 Valorant Shop" />
               <figcaption>
                 <h3>{{item0}}</h3>
+                <p class="price-tags">{{price0}} vbucks</p>
               </figcaption>
             </figure>
           </article>
@@ -122,6 +116,7 @@
               <img src="{{dailyOffer1}}" alt="Item 2 Valorant Shop" />
               <figcaption>
                 <h3>{{item1}}</h3>
+                <p class="price-tags">{{price1}} vbucks</p>
               </figcaption>
             </figure>
           </article>
@@ -130,6 +125,7 @@
               <img src="{{dailyOffer2}}" alt="Item 3 Valorant Shop" />
               <figcaption>
                 <h3>{{item2}}</h3>
+                <p class="price-tags">{{price2}} vbucks</p>
               </figcaption>
             </figure>
           </article>
@@ -138,6 +134,7 @@
               <img src="{{dailyOffer3}}" alt="Item 4 Valorant Shop" />
               <figcaption>
                 <h3>{{item3}}</h3>
+                <p class="price-tags">{{price3}} vbucks</p>
               </figcaption>
             </figure>
           </article>
