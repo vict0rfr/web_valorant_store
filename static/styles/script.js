@@ -5,7 +5,7 @@ const close_button = document.querySelector(".close-button");
 const body = document.querySelector("body");
 const section = document.querySelector("section");
 const footer = document.querySelector("footer");
-const bundleOfferImage = document.querySelector("#bundleOffer > figure > img");
+const bundleOfferImage = document.querySelector("#bundleImg");
 
 log_in.addEventListener("click", () => {
     document.querySelector(".login_box").style.display = "block";
@@ -30,3 +30,7 @@ close_button.addEventListener("click", () => {
 });
 
 // make the loading circle displayt block but it will dissapear when page refreshes
+
+// Catch errors since some browsers throw when using the new `type` option.
+// https://bugs.webkit.org/show_bug.cgi?id=209216
+// Remove the unnecessary try-catch block and the code inside it.
