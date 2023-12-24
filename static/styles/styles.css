@@ -14,12 +14,21 @@ nav {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 5px 0;
   width: calc(100% - 5vw);
   margin: 8px auto;
   transition: all 0.5s ease;
   background-color: #161a30;
   border-radius: 45px;
+  position: relative;
+}
+
+body > nav:nth-child(1) > ul:nth-child(2){
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 nav li {
@@ -125,15 +134,24 @@ section > div > article > figure > img {
     height: auto;    
 }
 
+body > main:nth-child(4) > section:nth-child(1) > h1:nth-child(1) {
+  margin: 10px 0 0 0;
+  padding: 0;
+  font-size: xx-large;
+  text-decoration: underline;
+}
+
 .wallet {
   display: flex;
-  font-size: smaller;
   width: 100%;
   height: auto;
-  padding: 18px 0 0 0;
   border-radius: 45px;
   justify-content: center;
   align-items: center;
+}
+
+.wallet > p {
+  font-size: large;
 }
 
 .wallet > h2 {
