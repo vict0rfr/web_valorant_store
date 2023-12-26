@@ -23,7 +23,7 @@ nav {
   position: relative;
 }
 
-body > nav:nth-child(1) > ul:nth-child(2){
+body > nav:nth-child(1) > ul:nth-child(2) {
   margin: 0 auto;
   position: absolute;
   top: 50%;
@@ -130,8 +130,8 @@ section > article > figure > img {
 }
 
 section > div > article > figure > img {
-    width: 85%;
-    height: auto;    
+  width: 85%;
+  height: auto;
 }
 
 body > main:nth-child(4) > section:nth-child(1) > h1:nth-child(1) {
@@ -208,7 +208,7 @@ div.login_form > form > p {
 }
 
 div.login_form > form > input[type="text"],
-div.login_form > form > input[type="password"] {
+div.login_form > form > div > input {
   background-color: white;
   border: 1px solid rgb(181, 181, 181);
   font: inherit;
@@ -261,8 +261,8 @@ div.login_form > form > input[type="submit"]:nth-child(5) {
 .night-market-img {
   display: flex;
   justify-content: center;
-  background-color: #AC87C5;
-  border: 3px solid #756AB6;
+  background-color: #ac87c5;
+  border: 3px solid #756ab6;
   border-radius: 10px;
   padding: 10px;
   align-items: center;
@@ -274,34 +274,58 @@ div.login_form > form > input[type="submit"]:nth-child(5) {
 }
 
 .night-market-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .night-market-info * {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 strong {
-    font-weight: bolder;
-    font-size: larger;
+  font-weight: bolder;
+  font-size: larger;
 }
 
 .time-left {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 figcaption {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
 }
 
 .price-tags {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.time-left-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.time-left-container * {
+  margin: 0 5px;
+}
+
+.visibility, div.login_form > form > div > input {
+  position: relative;
+  width: 96%;
+}
+
+.visibility button {
+  position: absolute;
+  top: 50%;
+  right: -2%;
+  transform: translateY(-180%);
+  color: #000;
 }

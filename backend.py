@@ -9,8 +9,8 @@ app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 app.permanent_session_lifetime = timedelta(minutes=5)
 app.config.update(
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_SAMESITE='None',
+    # SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='Lax',
 )
 
 @app.route('/', methods=['POST', 'GET'])
@@ -61,7 +61,8 @@ def itemshop():
                         price1=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         price2=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         price3=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
-                        timeleft_shop="Time left: " + format_timespan(store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"]),
+                        time_left_text="Time left: ",
+                        timeleft_shop=store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"],
                         login="Logged in as: " + user, 
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
@@ -92,7 +93,8 @@ def itemshop():
                         price1=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         price2=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         price3=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
-                        timeleft_shop="Time left: " + format_timespan(store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"]),
+                        time_left_text="Time left: ",
+                        timeleft_shop=store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"],
                         login="Logged in as: " + user, 
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
@@ -134,7 +136,8 @@ def nightmarket():
                         discountPrice3=str(store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         discountPrice4=str(store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         discountPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
-                        timeleft_nightmarket="Time left: " + format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
+                        time_left_text="Time left: ",
+                        timeleft_nightmarket=format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
                         login="Logged in as: " + user,
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
@@ -170,12 +173,13 @@ def nightmarket():
                         discountPrice3=str(store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         discountPrice4=str(store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         discountPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
-                        timeleft_nightmarket="Time left: " + format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
+                        time_left_text="Time left: ",
+                        timeleft_nightmarket=format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
                         login="Logged in as: " + user,
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
         return render_template("nightmarket.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login",)
-        
+
 @app.route('/accessories.html', methods=['POST', 'GET'])
 def accessories():
     if request.method == 'POST':
@@ -187,5 +191,12 @@ def accessories():
                     )
     else:
         return render_template("accessories.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg")
+
+@app.route('/logout.html', methods=['POST', 'GET'])
+def logout():
+    session.pop('user', None)
+    session.pop('pswd', None)
+    return redirect("/")
+
 if __name__ == '__main__':
     app.run(debug=True)

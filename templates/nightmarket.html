@@ -44,12 +44,17 @@
           <p>Username</p>
           <input type="text" name="username" placeholder="Username" required />
           <p>Password</p>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <span class="material-symbols-outlined visibility">
+              <button type="button" onclick="visibility()">visibility_off</button>
+            </span>
+          </div>
           <input type="submit" name="submit" value="Login" />
         </form>
       </div>
@@ -84,7 +89,10 @@
     <main>
       <section>
         <h2>Night Market</h2>
-        <p>{{timeleft_nightmarket}}</p>
+        <div class="time-left-container">
+          <p>{{time_left_text}}</p>
+          <p class="time-left">{{timeleft_nightmarket}}</p>
+        </div>
         <div class="night-market-container">
           <div class="night-market-img">
             <img src="{{nightmarket0}}" alt="{{nightmarketname0}}" />

@@ -42,14 +42,19 @@
       <div class="login_form">
         <form action="" method="POST">
           <p>Username</p>
-          <input type="text" name="username" placeholder="Username" required />
+            <input type="text" name="username" placeholder="Username" required/>
           <p>Password</p>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <span class="material-symbols-outlined visibility">
+              <button type="button" onclick="visibility()">visibility_off</button>
+            </span>
+          </div>
           <input type="submit" name="submit" value="Login" />
         </form>
       </div>
