@@ -196,7 +196,7 @@ def accessories():
 def logout():
     session.pop('user', None)
     session.pop('pswd', None)
-    return redirect("/")
+    return redirect(request.referrer or "/")
 
 if __name__ == '__main__':
     app.run(debug=True)

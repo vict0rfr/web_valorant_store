@@ -9,33 +9,29 @@ const bundleOfferImage = document.querySelector("#bundleImg");
 const timeElement = document.querySelector(".time-left");
 
 log_in.addEventListener("click", () => {
-  document.querySelector(".login_box").style.display = "block";
-  body.style.backgroundColor = "#181826";
-  section.style.backgroundColor = "#181826";
-  footer.style.backgroundColor = "#181826";
-  document
-    .querySelectorAll("div.grid > article > figure > img")
-    .forEach((img) => {
+    document.querySelector(".login_box").style.display = "block";
+    body.style.backgroundColor = "#181826";
+    section.style.backgroundColor = "#181826";
+    footer.style.backgroundColor = "#181826";
+    document.querySelectorAll("div.grid > article > figure > img").forEach((img) => {
       img.style.opacity = "0.4";
     });
-  bundleOfferImage.style.opacity = "0.4";
+    bundleOfferImage.style.opacity = "0.4";
 });
 
+  
 close_button.addEventListener("click", () => {
   document.querySelector(".login_box").style.display = "none";
   body.style.backgroundColor = "#31304D";
   section.style.backgroundColor = "#B6BBC4";
   footer.style.backgroundColor = "#F0ECE5";
-  document
-    .querySelectorAll("div.grid > article > figure > img")
-    .forEach((img) => {
+  document.querySelectorAll("div.grid > article > figure > img").forEach((img) => {
       img.style.opacity = "1";
     });
   bundleOfferImage.style.opacity = "1";
 });
 if (window.location.pathname === "/itemshop.html") {
   let tempCountdown = timeElement.innerText;
-  console.log(tempCountdown);
   let temp = tempCountdown;
 
   let hours = Math.floor((temp % (60 * 60 * 24)) / (60 * 60)).toString();
