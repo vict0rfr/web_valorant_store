@@ -99,7 +99,7 @@ def itemshop():
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
         else:
-            return render_template("itemshop.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
+            return redirect("index.html")
         
 @app.route('/nightmarket.html', methods=['POST', 'GET'])
 def nightmarket():
@@ -178,7 +178,7 @@ def nightmarket():
                         login="Logged in as: " + user,
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
-        return render_template("nightmarket.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login",)
+        return redirect("index.html")
 
 @app.route('/accessories.html', methods=['POST', 'GET'])
 def accessories():
@@ -190,7 +190,7 @@ def accessories():
 
                     )
     else:
-        return render_template("accessories.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg")
+        return redirect("index.html")
 
 @app.route('/logout.html', methods=['POST', 'GET'])
 def logout():

@@ -19,7 +19,11 @@ log_in.addEventListener("click", () => {
     bundleOfferImage.style.opacity = "0.4";
 });
 
-  
+if(log_in.textContent.includes("Logged in as")) {
+  document.querySelector("body > nav > img").style.display = "none";
+  document.querySelector("#log-out-button").style.display = "block";
+}
+
 close_button.addEventListener("click", () => {
   document.querySelector(".login_box").style.display = "none";
   body.style.backgroundColor = "#31304D";
@@ -30,6 +34,8 @@ close_button.addEventListener("click", () => {
     });
   bundleOfferImage.style.opacity = "1";
 });
+
+// calculate time left
 if (window.location.pathname === "/itemshop.html") {
   let tempCountdown = timeElement.innerText;
   let temp = tempCountdown;
@@ -51,6 +57,7 @@ if (window.location.pathname === "/itemshop.html") {
   }, 1000);
 }
 
+// to show password
 function visibility() {
   const button = document.querySelector("body > div > div.login_form > form > div > span > button")
   const password = document.querySelector("body > div > div.login_form > form > div > input");

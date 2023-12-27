@@ -13,26 +13,26 @@ nav {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   padding: 5px 0;
   width: calc(100% - 5vw);
   margin: 8px auto;
   transition: all 0.5s ease;
   background-color: #161a30;
   border-radius: 45px;
-  position: relative;
-}
-
-body > nav:nth-child(1) > ul:nth-child(2) {
-  margin: 0 auto;
-  position: absolute;
-  padding: 0 0 0 31%;
 }
 
 nav li {
   display: inline;
-  padding: 0 10px 0 10px;
-  font-size: 1.7em;
+  padding: 0 10px;
+  font-size: 1.6em;
+}
+
+body > nav > ul:nth-child(4) > li, #log-out-button {
+  margin: 0 20px;
+}
+
+body > nav > ul:nth-child(2){
+  padding: 0;
 }
 
 a {
@@ -54,17 +54,13 @@ nav > ul > li:hover,
 nav > ul > a:hover {
   background-color: #31304d;
   border-radius: 45px;
-  padding: 5px 10px 5px 10px;
+  padding: 0px 10px;
   opacity: 0.8;
 }
 
 nav > ul > li > a:active,
 nav > ul > li > button:active {
   opacity: 0.6;
-}
-nav > ul:nth-child(3) > li,
-nav > img {
-  margin: 0 20px;
 }
 
 header {
@@ -118,6 +114,13 @@ figure {
 nav > img {
   width: 70px;
   cursor: pointer;
+  padding: 0 30px;
+}
+
+body > nav > ul:nth-child(3){
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 section > article > figure > img {
@@ -325,4 +328,9 @@ figcaption {
   right: -2%;
   transform: translateY(-185%);
   color: #000;
+}
+
+#log-out-button {
+  display: none;
+  z-index: 99;
 }
