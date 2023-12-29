@@ -15,19 +15,25 @@ app.config.update(
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index.html', methods=['POST', 'GET'])
-def home():
+def home(): 
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
         session['user'] = user
         session['pswd'] = pswd
         session.permanent = True
-        return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+        try:
+            ValorantStore(username=user, password=pswd, region="na")
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+        except Exception:
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
     else:
         if "user" in session and "pswd" in session:
-            user = session["user"]
-            pswd = session["pswd"]
-            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+            try:
+                ValorantStore(username=user, password=pswd, region="na")
+                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+            except Exception:
+                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
         else:
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
 
