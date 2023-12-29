@@ -18,6 +18,9 @@
         aria-label="Valorant brand logo"
       />
       <ul>
+        <li id="log-out-button"><a href="logout.html">Logout</a></li>
+      </ul>
+      <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="itemshop.html">Shop</a></li>
         <li><a href="nightmarket.html">Night Market</a></li>
@@ -44,12 +47,19 @@
           <p>Username</p>
           <input type="text" name="username" placeholder="Username" required />
           <p>Password</p>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-          />
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <span class="material-symbols-outlined visibility">
+              <button type="button" onclick="visibility()">
+                visibility_off
+              </button>
+            </span>
+          </div>
           <input type="submit" name="submit" value="Login" />
         </form>
       </div>
@@ -84,54 +94,57 @@
     <main>
       <section>
         <h2>Night Market</h2>
-        <p>{{timeleft_nightmarket}}</p>
+        <div class="time-left-container">
+          <p>{{time_left_text}}</p>
+          <p class="time-left">{{timeleft_nightmarket}}</p>
+        </div>
         <div class="night-market-container">
           <div class="night-market-img">
             <img src="{{nightmarket0}}" alt="{{nightmarketname0}}" />
             <div class="night-market-info">
               <h3>{{nightmarketname0}}</h3>
-              <p>Original Cost: {{orgPrice0}} VBUCKS</p>
-              <p>Discounted Cost: <strong>{{discountPrice0}}</strong> VBUCKS</p>
+              <p>Original Cost: {{orgPrice0}}</p>
+              <p>Discounted Cost: <strong>{{discountPrice0}}</strong></p>
             </div>
           </div>
           <div class="night-market-img">
             <img src="{{nightmarket1}}" alt="{{nightmarketname1}}" />
             <div class="night-market-info">
               <h3>{{nightmarketname1}}</h3>
-              <p>Original Cost: {{orgPrice1}} VBUCKS</p>
-              <p>Discounted Cost: <strong>{{discountPrice1}}</strong> VBUCKS</p>
+              <p>Original Cost: {{orgPrice1}}</p>
+              <p>Discounted Cost: <strong>{{discountPrice1}}</strong></p>
             </div>
           </div>
           <div class="night-market-img">
             <img src="{{nightmarket2}}" alt="{{nightmarketname2}}" />
             <div class="night-market-info">
               <h3>{{nightmarketname2}}</h3>
-              <p>Original Cost: {{orgPrice2}} VBUCKS</p>
-              <p>Discounted Cost: <strong>{{discountPrice2}}</strong> VBUCKS</p>
+              <p>Original Cost: {{orgPrice2}}</p>
+              <p>Discounted Cost: <strong>{{discountPrice2}}</strong></p>
             </div>
           </div>
           <div class="night-market-img">
             <img src="{{nightmarket3}}" alt="{{nightmarketname3}}" />
             <div class="night-market-info">
               <h3>{{nightmarketname3}}</h3>
-              <p>Original Cost: {{orgPrice3}} VBUCKS</p>
-              <p>Discounted Cost: <strong>{{discountPrice3}}</strong> VBUCKS</p>
+              <p>Original Cost: {{orgPrice3}}</p>
+              <p>Discounted Cost: <strong>{{discountPrice3}}</strong></p>
             </div>
           </div>
           <div class="night-market-img">
             <img src="{{nightmarket4}}" alt="{{nightmarketname4}}" />
             <div class="night-market-info">
               <h3>{{nightmarketname4}}</h3>
-              <p>Original Cost: {{orgPrice4}} VBUCKS</p>
-              <p>Discounted Cost: <strong>{{discountPrice4}}</strong> VBUCKS</p>
+              <p>Original Cost: {{orgPrice4}}</p>
+              <p>Discounted Cost: <strong>{{discountPrice4}}</strong></p>
             </div>
           </div>
           <div class="night-market-img">
             <img src="{{nightmarket5}}" alt="{{nightmarketname5}}" />
             <div class="night-market-info">
               <h3>{{nightmarketname5}}</h3>
-              <p>Original Cost: {{orgPrice5}} VBUCKS</p>
-              <p>Discounted Cost: <strong>{{discountPrice5}}</strong> VBUCKS</p>
+              <p>Original Cost: {{orgPrice5}}</p>
+              <p>Discounted Cost: <strong>{{discountPrice5}}</strong></p>
             </div>
           </div>
         </div>

@@ -3,29 +3,40 @@ from valorantstore import ValorantStore
 import requests
 from humanfriendly import format_timespan
 from datetime import timedelta
+import secrets
 
 app = Flask(__name__)
-app.secret_key = "hello"
+app.secret_key = secrets.token_hex(16)
 app.permanent_session_lifetime = timedelta(minutes=5)
+app.config.update(
+    # SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index.html', methods=['POST', 'GET'])
-def home():
+def home(): 
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
         session['user'] = user
         session['pswd'] = pswd
         session.permanent = True
-        return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+        try:
+            ValorantStore(username=user, password=pswd, region="na")
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+        except Exception:
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
     else:
         if "user" in session and "pswd" in session:
-            user = session["user"]
-            pswd = session["pswd"]
-            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+            try:
+                ValorantStore(username=user, password=pswd, region="na")
+                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+            except Exception:
+                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
         else:
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
-    
+
 @app.route('/itemshop.html', methods=['POST', 'GET'])
 def itemshop():
     if request.method == 'POST':
@@ -43,7 +54,7 @@ def itemshop():
                         kingdom_credits=wallet["Balances"]["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"],
                         bundleImg=f"https://media.valorant-api.com/bundles/{store['FeaturedBundle']['Bundles'][0]['DataAssetID']}/displayicon.png",
                         bundle0=(requests.get(f"https://valorant-api.com/v1/bundles/{store['FeaturedBundle']['Bundles'][0]['DataAssetID']}").json())["data"]["displayName"],
-                        bundlePrice0=store["FeaturedBundle"]["Bundles"][0]["TotalDiscountedCost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        bundlePrice0=str(store["FeaturedBundle"]["Bundles"][0]["TotalDiscountedCost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         dailyOffer0=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][0]['OfferID']}/displayicon.png",
                         dailyOffer1=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][1]['OfferID']}/displayicon.png",
                         dailyOffer2=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][2]['OfferID']}/displayicon.png",
@@ -52,11 +63,12 @@ def itemshop():
                         item1=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][1]['OfferID']}").json()["data"]["displayName"],
                         item2=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][2]['OfferID']}").json()["data"]["displayName"],
                         item3=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][3]['OfferID']}").json()["data"]["displayName"],
-                        price0=store["SkinsPanelLayout"]["SingleItemStoreOffers"][0]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        price1=store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        price2=store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        price3=store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        timeleft_shop="Time left: " + format_timespan(store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"]),
+                        price0=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][0]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        price1=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        price2=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        price3=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        time_left_text="Time left: ",
+                        timeleft_shop=store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"],
                         login="Logged in as: " + user, 
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
@@ -74,7 +86,7 @@ def itemshop():
                         kingdom_credits=wallet["Balances"]["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"],
                         bundleImg=f"https://media.valorant-api.com/bundles/{store['FeaturedBundle']['Bundles'][0]['DataAssetID']}/displayicon.png",
                         bundle0=(requests.get(f"https://valorant-api.com/v1/bundles/{store['FeaturedBundle']['Bundles'][0]['DataAssetID']}").json())["data"]["displayName"],
-                        bundlePrice0=store["FeaturedBundle"]["Bundles"][0]["TotalDiscountedCost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
+                        bundlePrice0=str(store["FeaturedBundle"]["Bundles"][0]["TotalDiscountedCost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         dailyOffer0=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][0]['OfferID']}/displayicon.png",
                         dailyOffer1=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][1]['OfferID']}/displayicon.png",
                         dailyOffer2=f"https://media.valorant-api.com/weaponskinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][2]['OfferID']}/displayicon.png",
@@ -83,16 +95,17 @@ def itemshop():
                         item1=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][1]['OfferID']}").json()["data"]["displayName"],
                         item2=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][2]['OfferID']}").json()["data"]["displayName"],
                         item3=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['SkinsPanelLayout']['SingleItemStoreOffers'][3]['OfferID']}").json()["data"]["displayName"],
-                        price0=store["SkinsPanelLayout"]["SingleItemStoreOffers"][0]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        price1=store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        price2=store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        price3=store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        timeleft_shop="Time left: " + format_timespan(store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"]),
+                        price0=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][0]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        price1=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][1]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        price2=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][2]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        price3=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        time_left_text="Time left: ",
+                        timeleft_shop=store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"],
                         login="Logged in as: " + user, 
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
         else:
-            return render_template("itemshop.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
+            return redirect("index.html")
         
 @app.route('/nightmarket.html', methods=['POST', 'GET'])
 def nightmarket():
@@ -117,19 +130,20 @@ def nightmarket():
                         nightmarket3=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][3]['Offer']['OfferID']}/displayicon.png",
                         nightmarket4=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][4]['Offer']['OfferID']}/displayicon.png",
                         nightmarket5=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][5]['Offer']['OfferID']}/displayicon.png",
-                        orgPrice0=store['BonusStore']['BonusStoreOffers'][0]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice1=store['BonusStore']['BonusStoreOffers'][1]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice2=store['BonusStore']['BonusStoreOffers'][2]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice3=store['BonusStore']['BonusStoreOffers'][3]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice4=store['BonusStore']['BonusStoreOffers'][4]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice5=store['BonusStore']['BonusStoreOffers'][5]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice0=store['BonusStore']['BonusStoreOffers'][0]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice1=store['BonusStore']['BonusStoreOffers'][1]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice2=store['BonusStore']['BonusStoreOffers'][2]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice3=store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice4=store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice5=store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        timeleft_nightmarket="Time left: " + format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
+                        orgPrice0=str(store['BonusStore']['BonusStoreOffers'][0]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice1=str(store['BonusStore']['BonusStoreOffers'][1]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice2=str(store['BonusStore']['BonusStoreOffers'][2]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice3=str(store['BonusStore']['BonusStoreOffers'][3]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice4=str(store['BonusStore']['BonusStoreOffers'][4]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice0=str(store['BonusStore']['BonusStoreOffers'][0]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice1=str(store['BonusStore']['BonusStoreOffers'][1]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice2=str(store['BonusStore']['BonusStoreOffers'][2]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice3=str(store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice4=str(store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        time_left_text="Time left: ",
+                        timeleft_nightmarket=format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
                         login="Logged in as: " + user,
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
@@ -153,24 +167,25 @@ def nightmarket():
                         nightmarket3=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][3]['Offer']['OfferID']}/displayicon.png",
                         nightmarket4=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][4]['Offer']['OfferID']}/displayicon.png",
                         nightmarket5=f"https://media.valorant-api.com/weaponskinlevels/{store['BonusStore']['BonusStoreOffers'][5]['Offer']['OfferID']}/displayicon.png",
-                        orgPrice0=store['BonusStore']['BonusStoreOffers'][0]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice1=store['BonusStore']['BonusStoreOffers'][1]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice2=store['BonusStore']['BonusStoreOffers'][2]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice3=store['BonusStore']['BonusStoreOffers'][3]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice4=store['BonusStore']['BonusStoreOffers'][4]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        orgPrice5=store['BonusStore']['BonusStoreOffers'][5]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice0=store['BonusStore']['BonusStoreOffers'][0]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice1=store['BonusStore']['BonusStoreOffers'][1]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice2=store['BonusStore']['BonusStoreOffers'][2]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice3=store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice4=store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        discountPrice5=store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
-                        timeleft_nightmarket="Time left: " + format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
+                        orgPrice0=str(store['BonusStore']['BonusStoreOffers'][0]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice1=str(store['BonusStore']['BonusStoreOffers'][1]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice2=str(store['BonusStore']['BonusStoreOffers'][2]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice3=str(store['BonusStore']['BonusStoreOffers'][3]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice4=str(store['BonusStore']['BonusStoreOffers'][4]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        orgPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['Offer']["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice0=str(store['BonusStore']['BonusStoreOffers'][0]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice1=str(store['BonusStore']['BonusStoreOffers'][1]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice2=str(store['BonusStore']['BonusStoreOffers'][2]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice3=str(store['BonusStore']['BonusStoreOffers'][3]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice4=str(store['BonusStore']['BonusStoreOffers'][4]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        discountPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
+                        time_left_text="Time left: ",
+                        timeleft_nightmarket=format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
                         login="Logged in as: " + user,
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
-        return render_template("nightmarket.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login",)
-        
+        return redirect("index.html")
+
 @app.route('/accessories.html', methods=['POST', 'GET'])
 def accessories():
     if request.method == 'POST':
@@ -181,6 +196,13 @@ def accessories():
 
                     )
     else:
-        return render_template("accessories.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg")
+        return redirect("index.html")
+
+@app.route('/logout.html', methods=['POST', 'GET'])
+def logout():
+    session.pop('user', None)
+    session.pop('pswd', None)
+    return redirect(request.referrer or "/")
+
 if __name__ == '__main__':
     app.run(debug=True)
