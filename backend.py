@@ -24,15 +24,21 @@ def home():
         session.permanent = True
         try:
             ValorantStore(username=user, password=pswd, region="na")
-            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
         except Exception:
+            session.pop('user', None)
+            session.pop('pswd', None)
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
     else:
         if "user" in session and "pswd" in session:
+            user = session["user"]
+            pswd = session["pswd"]
+            session.permanent = True
             try:
-                ValorantStore(username=user, password=pswd, region="na")
-                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user,)
+                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
             except Exception:
+                session.pop('user', None)
+                session.pop('pswd', None)
                 return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
         else:
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
@@ -202,7 +208,7 @@ def accessories():
 def logout():
     session.pop('user', None)
     session.pop('pswd', None)
-    return redirect(request.referrer or "/")
+    return redirect("/")
 
 if __name__ == '__main__':
     app.run(debug=True)
