@@ -52,7 +52,7 @@ if (window.location.pathname === '/itemshop.html') {
 // to show password
 function visibility() {
   const button = document.querySelector(
-    'body > div > div.login_form > form > div > span > button'
+    'body > div > div.login_form > form > div > button'
   );
   const password = document.querySelector(
     'body > div > div.login_form > form > div > input'

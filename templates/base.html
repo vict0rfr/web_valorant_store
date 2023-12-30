@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block page_title %}{% endblock %}</title>
     <link href="..\static\styles\styles.css" rel="stylesheet" type="text/css" />
     <link href="{{logo}}" rel="icon" type="image/webp" />
     <script src="..\static\styles\script.js" defer></script>
@@ -14,12 +14,10 @@
         src="{{logo}}"
         alt="Valorant brand logo"
         tabindex="0"
-        role="button"
-        aria-label="Valorant brand logo"
       />
       <ul>
         <li id="log-out-button"><a href="logout.html">Logout</a></li>
-        </ul>
+      </ul>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="itemshop.html">Shop</a></li>
@@ -27,11 +25,11 @@
         <li><a href="accessories.html">Accessories</a></li>
       </ul>
       <ul>
-        <li><button class="log-in">Log In</button></li>
+        <li><button class="log-in">{{login}}</button></li>
       </ul>
     </nav>
     <header>
-      {% block h1_title %}{% endblock %}
+      <h1>{% block h1_title %}{% endblock %}</h1>
       <p>Made by: la degaine a tt</p>
     </header>
     <div class="login_box animate">
@@ -44,9 +42,9 @@
       </div>
       <div class="login_form">
         <form action="" method="POST">
-          <p>Username</p>
-            <input type="text" name="username" placeholder="Username" required/>
-          <p>Password</p>
+          <label for="username">Username</label>
+          <input type="text" name="username" placeholder="Username" required />
+          <label for="password">Password</label>
           <div>
             <input
               type="password"
@@ -54,10 +52,19 @@
               placeholder="Password"
               required
             />
-            <span class="material-symbols-outlined visibility">
-              <button type="button" onclick="visibility()">visibility_off</button>
-            </span>
+              <button class="material-symbols-outlined visibility" type="button" onclick="visibility()">
+                visibility_off
+              </button>
           </div>
+          <label for="region">Region</label>
+          <select id="region" name="region">
+            <option value="na">NA</option>
+            <option value="latam">LATAM</option>
+            <option value="br">BR</option>
+            <option value="eu">EU</option>
+            <option value="kr">KR</option>
+            <option value="ap">AP</option>
+          </select>
           <input type="submit" name="submit" value="Login" />
         </form>
         <p id="error-msg">{{error_msg}}</p>
@@ -90,7 +97,7 @@
         </path>
       </svg>
     </div>
-    {% block main %} {% endblock %}
+    {% block main %}{% endblock %}
     <footer>
       <p>Valorant &copy; 2023</p>
       <p>Random garbage</p>

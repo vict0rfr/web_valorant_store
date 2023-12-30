@@ -1,97 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Valorant Store | Item Shop</title>
-    <link href="..\static\styles\styles.css" rel="stylesheet" type="text/css" />
-    <link href="{{logo}}" rel="icon" type="image/webp" />
-    <script src="..\static\styles\script.js" defer></script>
-  </head>
-  <body>
-    <nav>
-      <img
-        src="{{logo}}"
-        alt="Valorant brand logo"
-        tabindex="0"
-        role="button"
-        aria-label="Valorant brand logo"
-      />
-      <ul>
-        <li id="log-out-button"><a href="logout.html">Logout</a></li>
-      </ul>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="itemshop.html">Shop</a></li>
-        <li><a href="nightmarket.html">Night Market</a></li>
-        <li><a href="accessories.html">Accessories</a></li>
-      </ul>
-      <ul>
-        <li><button class="log-in">{{login}}</button></li>
-      </ul>
-    </nav>
-    <header>
-      <h1>Item Shop</h1>
-      <p>[enter something]</p>
-    </header>
-    <div class="login_box animate">
-      <div class="login_header">
-        <span class="material-symbols-outlined close-button"
-          ><button>close</button></span
-        >
-        <h1>Login</h1>
-        <p>Please enter your username and password to login</p>
-      </div>
-      <div class="login_form">
-        <form action="" method="POST">
-          <p>Username</p>
-          <input type="text" name="username" placeholder="Username" required />
-          <p>Password</p>
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-            <span class="material-symbols-outlined visibility">
-              <button type="button" onclick="visibility()">
-                visibility_off
-              </button>
-            </span>
-          </div>
-          <input type="submit" name="submit" value="Login" />
-        </form>
-        <p id="error-msg">{{error_msg}}</p>
-      </div>
-      <svg
-        version="1.1"
-        id="L9"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px"
-        y="0px"
-        viewBox="0 0 100 100"
-        enable-background="new 0 0 0 0"
-        xml:space="preserve"
-        class="loader"
-      >
-        <path
-          fill="#fff"
-          d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"
-        >
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            dur="1s"
-            from="0 50 50"
-            to="360 50 50"
-            repeatCount="indefinite"
-          />
-        </path>
-      </svg>
-    </div>
+{% extends "base.html" %}
+{% block page_title %}Valorant Store | Item Shop{% endblock %}
+{% block h1_title %}Itemshop{% endblock %}
+{% block main %}
     <main>
       <section>
         <h1>Wallet</h1>
@@ -160,9 +70,4 @@
         </div>
       </section>
     </main>
-    <footer>
-      <p>Valorant &copy; 2023</p>
-      <p>Random garbage</p>
-    </footer>
-  </body>
-</html>
+{% endblock %}

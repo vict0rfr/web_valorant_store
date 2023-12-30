@@ -15,30 +15,35 @@ app.config.update(
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index.html', methods=['POST', 'GET'])
-def home(): 
+def home():
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
+        region = request.form['region']
         session['user'] = user
         session['pswd'] = pswd
+        session['region'] = region
         session.permanent = True
         try:
-            ValorantStore(username=user, password=pswd, region="na")
+            ValorantStore(username=user, password=pswd, region=region)
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
         except Exception:
             session.pop('user', None)
             session.pop('pswd', None)
+            session.pop('region', None)
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
     else:
-        if "user" in session and "pswd" in session:
+        if "user" in session and "pswd" in session and "region" in session:
             user = session["user"]
             pswd = session["pswd"]
+            region = session["region"]
             session.permanent = True
             try:
                 return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
             except Exception:
                 session.pop('user', None)
                 session.pop('pswd', None)
+                session.pop('region', None)
                 return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
         else:
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
@@ -48,10 +53,12 @@ def itemshop():
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
-        session.permanent = True
+        region = request.form['region']
         session['user'] = user
         session['pswd'] = pswd
-        valorant_store = ValorantStore(username=user, password=pswd, region="na")
+        session['region'] = region
+        session.permanent = True
+        valorant_store = ValorantStore(username=user, password=pswd, region=region)
         store = valorant_store.store(False)
         wallet = valorant_store.wallet(False)
         return render_template("itemshop.html",
@@ -79,11 +86,12 @@ def itemshop():
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
     else:
-        if "user" in session and "pswd" in session:
+        if "user" in session and "pswd" in session and "region" in session:
             user = session["user"]
             pswd = session["pswd"]
+            region = session["region"]
             session.permanent = True
-            valorant_store = ValorantStore(username=user, password=pswd, region="na")
+            valorant_store = ValorantStore(username=user, password=pswd, region=region)
             store = valorant_store.store(False)
             wallet = valorant_store.wallet(False)
             return render_template("itemshop.html",
@@ -118,10 +126,12 @@ def nightmarket():
     if request.method == 'POST':
         user = request.form['username']
         pswd = request.form['password']
-        session.permanent = True
+        region = request.form['region']
         session['user'] = user
         session['pswd'] = pswd
-        valorant_store = ValorantStore(username=user, password=pswd, region="na")
+        session['region'] = region
+        session.permanent = True
+        valorant_store = ValorantStore(username=user, password=pswd, region=region)
         store = valorant_store.store(False)
         return render_template("nightmarket.html",
                         nightmarketname0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}").json()["data"]["displayName"],
@@ -154,11 +164,12 @@ def nightmarket():
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
     else:
-        if "user" in session and "pswd" in session:
+        if "user" in session and "pswd" in session and "region" in session:
             user = session["user"]
             pswd = session["pswd"]
+            region = session["region"]
             session.permanent = True
-            valorant_store = ValorantStore(username=user, password=pswd, region="na")
+            valorant_store = ValorantStore(username=user, password=pswd, region=region)
             store = valorant_store.store(False)
             return render_template("nightmarket.html",
                         nightmarketname0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}").json()["data"]["displayName"],
@@ -195,9 +206,13 @@ def nightmarket():
 @app.route('/accessories.html', methods=['POST', 'GET'])
 def accessories():
     if request.method == 'POST':
-        user = request.form['username']
-        pswd = request.form['password']
-        valorant_store = ValorantStore(username=user, password=pswd, region="na")
+        user = session["user"]
+        pswd = session["pswd"]
+        region = session["region"]
+        session['user'] = user
+        session['pswd'] = pswd
+        session['region'] = region
+        valorant_store = ValorantStore(username=user, password=pswd, region=region)
         return render_template("accessories.html",
 
                     )
@@ -208,6 +223,7 @@ def accessories():
 def logout():
     session.pop('user', None)
     session.pop('pswd', None)
+    session.pop('region', None)
     return redirect("/")
 
 if __name__ == '__main__':
