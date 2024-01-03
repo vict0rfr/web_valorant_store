@@ -50,7 +50,7 @@ if (window.location.pathname === '/itemshop.html') {
 }
 
 // to show password
-function visibility() {
+function password_visibility() {
   const button = document.querySelector(
     'body > div > div.login_form > form > div > button'
   );
@@ -69,7 +69,7 @@ function visibility() {
 if (
   document
     .querySelector('#error-msg')
-    .textContent.includes('Incorrect username/password. Try again.')
+    .textContent.includes('Information enterred is incorrect. Try again')
 ) {
   showLoginBox();
 }

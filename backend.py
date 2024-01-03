@@ -17,34 +17,34 @@ app.config.update(
 @app.route('/index.html', methods=['POST', 'GET'])
 def home():
     if request.method == 'POST':
-        user = request.form['username']
-        pswd = request.form['password']
-        region = request.form['region']
-        session['user'] = user
-        session['pswd'] = pswd
-        session['region'] = region
-        session.permanent = True
         try:
+            user = request.form['username']
+            pswd = request.form['password']
+            region = request.form['region']
+            session['user'] = user
+            session['pswd'] = pswd
+            session['region'] = region
+            session.permanent = True
             ValorantStore(username=user, password=pswd, region=region)
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
         except Exception:
             session.pop('user', None)
             session.pop('pswd', None)
             session.pop('region', None)
-            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Information enterred is incorrect. Try again")
     else:
         if "user" in session and "pswd" in session and "region" in session:
-            user = session["user"]
-            pswd = session["pswd"]
-            region = session["region"]
-            session.permanent = True
             try:
+                user = session["user"] # this might not be used at all
+                pswd = session["pswd"]
+                region = session["region"]
+                session.permanent = True
                 return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
             except Exception:
                 session.pop('user', None)
                 session.pop('pswd', None)
                 session.pop('region', None)
-                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Incorrect username/password. Try again.")
+                return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Information enterred is incorrect. Try again")
         else:
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
 
