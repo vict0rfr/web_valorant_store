@@ -1,9 +1,9 @@
 from flask import Flask, redirect, url_for, request, render_template, session
-from valorantstore import ValorantStore
 import requests
 from humanfriendly import format_timespan
 from datetime import timedelta
 import secrets
+from dependencies.ValorantStore import ValorantStore
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -59,8 +59,8 @@ def itemshop():
         session['region'] = region
         session.permanent = True
         valorant_store = ValorantStore(username=user, password=pswd, region=region)
-        store = valorant_store.store(False)
-        wallet = valorant_store.wallet(False)
+        store = valorant_store.store()
+        wallet = valorant_store.wallet()
         return render_template("itemshop.html",
                         val_credits=wallet["Balances"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
                         rad_points=wallet["Balances"]["e59aa87c-4cbf-517a-5983-6e81511be9b7"],
@@ -92,8 +92,8 @@ def itemshop():
             region = session["region"]
             session.permanent = True
             valorant_store = ValorantStore(username=user, password=pswd, region=region)
-            store = valorant_store.store(False)
-            wallet = valorant_store.wallet(False)
+            store = valorant_store.store()
+            wallet = valorant_store.wallet()
             return render_template("itemshop.html",
                         val_credits=wallet["Balances"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"],
                         rad_points=wallet["Balances"]["e59aa87c-4cbf-517a-5983-6e81511be9b7"],
@@ -132,7 +132,7 @@ def nightmarket():
         session['region'] = region
         session.permanent = True
         valorant_store = ValorantStore(username=user, password=pswd, region=region)
-        store = valorant_store.store(False)
+        store = valorant_store.store()
         return render_template("nightmarket.html",
                         nightmarketname0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}").json()["data"]["displayName"],
                         nightmarketname1=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][1]['Offer']['OfferID']}").json()["data"]["displayName"],
@@ -170,7 +170,7 @@ def nightmarket():
             region = session["region"]
             session.permanent = True
             valorant_store = ValorantStore(username=user, password=pswd, region=region)
-            store = valorant_store.store(False)
+            store = valorant_store.store()
             return render_template("nightmarket.html",
                         nightmarketname0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}").json()["data"]["displayName"],
                         nightmarketname1=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][1]['Offer']['OfferID']}").json()["data"]["displayName"],

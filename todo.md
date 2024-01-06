@@ -19,3 +19,4 @@
 - [ ] Update ValorantStore.py, remove .pickle usage to not store date
 - [ ] Session POP on other pages too, if changing accounts is wrong info
 - [ ] return error if region given is wrong
+- [ ] optimize libraries
