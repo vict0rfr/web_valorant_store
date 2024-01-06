@@ -207,8 +207,7 @@ class ValorantStore:
         response = self.request.get(f"https://pd.{self.__region}.a.pvp.net/store/v1/wallet/{self.__auth['player']}",
                                     headers=self.headers)
         try:
-            wallet = response.json()
-            return wallet
+            return response.json()
         except Exception:
             raise ValorantStoreException("wallet", "request", response)
 
@@ -217,7 +216,6 @@ class ValorantStore:
             f"https://pd.{self.__region}.a.pvp.net/store/v2/storefront/{self.__auth['player']}",
             headers=self.headers)
         try:
-            store = response.json()
-            return store
+            return response.json()
         except Exception:
             raise ValorantStoreException("store", "request", response)
