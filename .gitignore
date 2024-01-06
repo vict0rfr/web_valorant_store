@@ -2,3 +2,5 @@ riot_auth_*.pickle
 riot_cookie_*.pickle
 venv
 env
+dependencies/__pycache__/
+dependencies/__pycache__/*
