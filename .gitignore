@@ -1,4 +1,4 @@
 riot_auth_*.pickle
 riot_cookie_*.pickle
-.venv
-.env
+venv
+env
