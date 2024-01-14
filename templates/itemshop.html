@@ -2,72 +2,68 @@
 {% block page_title %}Valorant Store | Item Shop{% endblock %}
 {% block h1_title %}Itemshop{% endblock %}
 {% block main %}
-    <main>
-      <section>
-        <h1>Wallet</h1>
-        <div class="wallet">
-          <h2>Valorant Credits:</h2>
-          <p>{{val_credits}}</p>
-          <h2>Radianite Points:</h2>
-          <p>{{rad_points}}</p>
-          <h2>Kingdom Credits:</h2>
-          <p>{{kingdom_credits}}</p>
-        </div>
-        <div class="time-left-container">
-          <p>{{time_left_text}}</p>
-          <p class="time-left">{{timeleft_shop}}</p>
-        </div>
-        <article>
-          <figure>
-            <img
-              id="bundleImg"
-              src="{{bundleImg}}"
-              alt="Bundle Valorant Shop"
-            />
-            <figcaption>
-              <h3>{{bundle0}}</h3>
-              <p class="price-tags">{{bundlePrice0}}</p>
-            </figcaption>
-          </figure>
-        </article>
-        <div class="grid">
-          <article>
-            <figure>
-              <img src="{{dailyOffer0}}" alt="Item 1 Valorant Shop" />
-              <figcaption>
-                <h3>{{item0}}</h3>
-                <p class="price-tags">{{price0}}</p>
-              </figcaption>
-            </figure>
-          </article>
-          <article>
-            <figure>
-              <img src="{{dailyOffer1}}" alt="Item 2 Valorant Shop" />
-              <figcaption>
-                <h3>{{item1}}</h3>
-                <p class="price-tags">{{price1}}</p>
-              </figcaption>
-            </figure>
-          </article>
-          <article>
-            <figure>
-              <img src="{{dailyOffer2}}" alt="Item 3 Valorant Shop" />
-              <figcaption>
-                <h3>{{item2}}</h3>
-                <p class="price-tags">{{price2}}</p>
-              </figcaption>
-            </figure>
-          </article>
-          <article>
-            <figure>
-              <img src="{{dailyOffer3}}" alt="Item 4 Valorant Shop" />
-              <figcaption>
-                <h3>{{item3}}</h3>
-                <p class="price-tags">{{price3}}</p>
-              </figcaption>
-            </figure>
-          </article>
-        </div>
-      </section>
-    </main>
+<main>
+  <section>
+    <h1>Wallet</h1>
+    <div class="wallet">
+      <h2>Valorant Credits:</h2>
+      <p>{{val_credits}}</p>
+      <h2>Radianite Points:</h2>
+      <p>{{rad_points}}</p>
+      <h2>Kingdom Credits:</h2>
+      <p>{{kingdom_credits}}</p>
+    </div>
+    <div class="time-left-container">
+      <p>{{time_left_text}}</p>
+      <p class="time-left">{{timeleft_shop}}</p>
+    </div>
+    <article>
+      <figure>
+        <img id="bundleImg" src="{{bundleImg}}" alt="Bundle Valorant Shop" />
+        <figcaption>
+          <h3>{{bundle0}}</h3>
+          <p class="price-tags">{{bundlePrice0}}</p>
+        </figcaption>
+      </figure>
+    </article>
+    <div class="grid">
+      <article>
+        <figure>
+          <img src="{{dailyOffer0}}" alt="Item 1 Valorant Shop" />
+          <figcaption>
+            <h3>{{item0}}</h3>
+            <p class="price-tags">{{price0}}</p>
+          </figcaption>
+        </figure>
+      </article>
+      <article>
+        <figure>
+          <img src="{{dailyOffer1}}" alt="Item 2 Valorant Shop" />
+          <figcaption>
+            <h3>{{item1}}</h3>
+            <p class="price-tags">{{price1}}</p>
+          </figcaption>
+        </figure>
+      </article>
+      <article>
+        <figure>
+          <img src="{{dailyOffer2}}" alt="Item 3 Valorant Shop" />
+          <figcaption>
+            <h3>{{item2}}</h3>
+            <p class="price-tags">{{price2}}</p>
+          </figcaption>
+        </figure>
+      </article>
+      <article>
+        <figure>
+          <img src="{{dailyOffer3}}" alt="Item 4 Valorant Shop" />
+          <figcaption>
+            <h3>{{item3}}</h3>
+            <p class="price-tags">{{price3}}</p>
+          </figcaption>
+        </figure>
+      </article>
+    </div>
+  </section>
+</main>
 {% endblock %}

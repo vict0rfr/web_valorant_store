@@ -38,26 +38,6 @@ class ValorantStore:
         return [i.split("=")[-1] for i in url.split("#", 1)[-1].split("&") if i.startswith("access_token" + "=")][0]
 
     @staticmethod
-    def __skin_image(skin: str) -> str:
-        return f"https://media.valorant-api.com/weaponskinlevels/{skin}/displayicon.png"
-
-    @staticmethod
-    def __buddy_image(buddy: str) -> str:
-        return f"https://media.valorant-api.com/buddylevels/{buddy}/displayicon.png"
-
-    @staticmethod
-    def __card_image(card: str) -> str:
-        return f"https://media.valorant-api.com/playercards/{card}/largeart.png"
-
-    @staticmethod
-    def __spray_image(spray: str) -> str:
-        return f"https://media.valorant-api.com/sprays/{spray}/fulltransparenticon.png"
-
-    @staticmethod
-    def __bundle_image(bundle: str) -> str:
-        return f"https://media.valorant-api.com/bundles/{bundle}/displayicon.png"
-
-    @staticmethod
     def skin_info(skin: str) -> dict:
         response = requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{skin}")
         try:
