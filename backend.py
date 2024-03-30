@@ -14,7 +14,6 @@ app.config.update(
 )
 
 @app.route('/', methods=['POST', 'GET'])
-@app.route('/index.html', methods=['POST', 'GET'])
 def home():
     if request.method == 'POST':
         try:
@@ -34,9 +33,8 @@ def home():
             return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Information enterred is incorrect. Try again")
     else:
         if "user" in session and "pswd" in session and "region" in session:
-            user = session["user"]
-            session.permanent = True
-            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user)
+            # session.permanent = True
+            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + session["user"])
         return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login")
 
 @app.route('/itemshop.html', methods=['POST', 'GET'])
@@ -81,15 +79,12 @@ def itemshop():
             session.pop('user', None)
             session.pop('pswd', None)
             session.pop('region', None)
-            return render_template("itemshop.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Information enterred is incorrect. Try again")
+            return redirect("/")
     
     else:
         if "user" in session and "pswd" in session and "region" in session:
-            user = session["user"]
-            pswd = session["pswd"]
-            region = session["region"]
-            session.permanent = True
-            valorant_store = ValorantStore(username=user, password=pswd, region=region)
+            # session.permanent = True
+            valorant_store = ValorantStore(username=session["user"], password=session["pswd"], region=session["region"])
             store = valorant_store.store()
             wallet = valorant_store.wallet()
             return render_template("itemshop.html",
@@ -113,10 +108,10 @@ def itemshop():
                         price3=str(store["SkinsPanelLayout"]["SingleItemStoreOffers"][3]["Cost"]["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         time_left_text="Time left: ",
                         timeleft_shop=store["SkinsPanelLayout"]["SingleItemOffersRemainingDurationInSeconds"],
-                        login="Logged in as: " + user, 
+                        login="Logged in as: " + session["user"], 
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
-        return redirect("index.html")
+        return redirect("/")
         
 @app.route('/nightmarket.html', methods=['POST', 'GET'])
 def nightmarket():
@@ -165,14 +160,11 @@ def nightmarket():
             session.pop('user', None)
             session.pop('pswd', None)
             session.pop('region', None)
-            return render_template("index.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Information enterred is incorrect. Try again")
+            return redirect("/")
     else:
         if "user" in session and "pswd" in session and "region" in session:
-            user = session["user"]
-            pswd = session["pswd"]
-            region = session["region"]
-            session.permanent = True
-            valorant_store = ValorantStore(username=user, password=pswd, region=region)
+            # session.permanent = True
+            valorant_store = ValorantStore(username=session["user"], password=session["pswd"], region=session["region"])
             store = valorant_store.store()
             return render_template("nightmarket.html",
                         nightmarketname0=requests.get(f"https://valorant-api.com/v1/weapons/skinlevels/{store['BonusStore']['BonusStoreOffers'][0]['Offer']['OfferID']}").json()["data"]["displayName"],
@@ -201,45 +193,11 @@ def nightmarket():
                         discountPrice5=str(store['BonusStore']['BonusStoreOffers'][5]['DiscountCosts']["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"]) + " VBUCKS",
                         time_left_text="Time left: ",
                         timeleft_nightmarket=format_timespan(store["BonusStore"]["BonusStoreRemainingDurationInSeconds"]),
-                        login="Logged in as: " + user,
+                        login="Logged in as: " + session["user"],
                         logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg"
                     )
-        return redirect("index.html")
+        return redirect("/")
 
-@app.route('/accessories.html', methods=['POST', 'GET'])
-def accessories():
-    if request.method == 'POST':
-        try:
-            user = session["username"]
-            pswd = session["password"]
-            region = session["region"]
-            session['user'] = user
-            session['pswd'] = pswd
-            session['region'] = region
-            session.permanent = True
-            valorant_store = ValorantStore(username=user, password=pswd, region=region)
-            store = valorant_store.store()
-            return render_template("accessories.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user
-
-                    )
-        except Exception:
-            session.pop('user', None)
-            session.pop('pswd', None)
-            session.pop('region', None) # make render template show login box on refresh
-            return render_template("accessories.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Login", error_msg="Information enterred is incorrect. Try again")
-    else:
-        if "user" in session and "pswd" in session and "region" in session:
-            user = session["user"] # this might not be used at all
-            pswd = session["pswd"]
-            region = session["region"]
-            session.permanent = True
-            valorant_store = ValorantStore(username=user, password=pswd, region=region)
-            store = valorant_store.store()
-            return render_template("accessories.html", logo="https://www.svgrepo.com/show/424912/valorant-logo-play-2.svg", login="Logged in as: " + user
-                                   
-                    )
-        return redirect("index.html")
-    
 @app.route('/logout.html', methods=['POST', 'GET'])
 def logout():
     session.pop('user', None)
